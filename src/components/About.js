@@ -1,12 +1,14 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const About = () => {
+  const { t } = useLanguage();
   return (
     <section className="about-us section-reveal" id="about">
       <div className="container">
         <div className="section-header">
-          <h2 className="section-title">About Us</h2>
-          <p className="section-subtitle">We're a City of Tshwane initiative that helps car wash operators transition to sustainable, water-efficient businesses. Our platform provides regulatory support, training, and tools to ensure compliance while promoting economic growth in local communities.</p>
+          <h2 className="section-title">{t('about.title')}</h2>
+          <p className="section-subtitle">{t('about.subtitle')}</p>
         </div>
       </div>
     </section>

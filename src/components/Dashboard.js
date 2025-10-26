@@ -67,13 +67,14 @@ const Dashboard = () => {
       });
     });
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const ref = sectionRef.current;
+    if (ref) {
+      observer.observe(ref);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (ref) {
+        observer.unobserve(ref);
       }
     };
   }, [hasAnimated]);

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import adminApi from '../api/adminApi';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const Dashboard = () => {
   const sidebarItems = [
     { id: 'overview', icon: 'fas fa-tachometer-alt', label: 'Overview' },
     { id: 'water-usage', icon: 'fas fa-tint', label: 'Water Usage' },
+    { id: 'announcements', icon: 'fas fa-bullhorn', label: 'Announcements' },
     { id: 'compliance', icon: 'fas fa-shield-alt', label: 'Compliance' },
     { id: 'training', icon: 'fas fa-graduation-cap', label: 'Training' },
     { id: 'incentives', icon: 'fas fa-gift', label: 'Incentives' },
@@ -350,6 +352,43 @@ const Dashboard = () => {
             <small>1 day ago</small>
           </div>
         </div>
+      </div>
+    </div>
+  );
+
+  const [announcements, setAnnouncements] = useState([]);
+
+  useEffect(() => {
+    let mounted = true;
+    adminApi.fetchAnnouncements().then(list => {
+      if (mounted && Array.isArray(list)) setAnnouncements(list);
+    }).catch(() => {
+      if (mounted) setAnnouncements([]);
+    });
+    return () => { mounted = false; };
+  }, []);
+
+  const renderAnnouncements = () => (
+    <div className="dashboard-section">
+      <div className="section-header">
+        <h2><i className="fas fa-bullhorn"></i> Announcements & Notifications</h2>
+        <p>Latest messages and notifications from the administration.</p>
+      </div>
+
+      <div className="ann-list">
+        {announcements.length ? (
+          <ul className="list-plain">
+            {announcements.map(a => (
+              <li key={a.id} style={{ padding: 12, borderBottom: '1px solid #eee' }}>
+                <strong>{a.title}</strong>
+                <div style={{ fontSize: 13, opacity: 0.9 }}>{a.desc}</div>
+                {a.priority && <div style={{ fontSize: 12, marginTop: 6, opacity: 0.8 }}><em>Priority: {a.priority}</em></div>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No announcements at this time.</p>
+        )}
       </div>
     </div>
   );
@@ -1597,6 +1636,8 @@ const Dashboard = () => {
             </div>
           </div>
         );
+      case 'announcements':
+        return renderAnnouncements();
       default:
         return renderOverview();
     }
@@ -1614,9 +1655,9 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="header-actions">
-            <button className="btn btn-outline">
+            <button className="btn btn-outline" onClick={() => handleSectionChange('announcements')} aria-label="Open announcements">
               <i className="fas fa-bell"></i>
-              <span className="notification-badge">3</span>
+              <span className="notification-badge">{announcements.length}</span>
             </button>
             
             {/* User Profile Dropdown */}

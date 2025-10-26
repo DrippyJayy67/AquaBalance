@@ -147,7 +147,7 @@ body {
 }
 
 .language-toggle select {
-    background: rgba(255, 255, 255, 0.2);
+    background: #2d5016;
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     padding: 0.5rem;
@@ -516,6 +516,42 @@ section.about-us .container .section-header .section-title {
 }
 
 .story-header {
+
+/* Admin improvements */
+.dashboard-layout { display: flex; gap: 20px; }
+.dashboard-sidebar { width: 260px; }
+.dashboard-main { flex: 1; }
+.admin-list-btn { width: 100%; text-align: left; padding: 10px; border-radius: 6px; border: 1px solid #eee; background: #fff; }
+.admin-list-btn.active { box-shadow: 0 6px 18px rgba(11,30,51,0.06); }
+.btn-primary { background: linear-gradient(90deg,#1e90ff,#2b9cf3); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
+.btn-secondary { background: #f3f4f6; color: #111827; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+.btn-danger { background: #ff6b6b; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; }
+.btn-tshwane { border-left: 4px solid #0078d4; }
+.btn-soshanguve { border-left: 4px solid #ff8c00; }
+.btn-garankuwa { border-left: 4px solid #22c55e; }
+.list-plain { list-style: none; padding: 0; margin: 0; }
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { border: 1px solid #eee; padding: 8px; }
+
+@media (max-width: 900px) {
+    .dashboard-layout { flex-direction: column; }
+    .dashboard-sidebar { width: 100%; order: 2; }
+    .dashboard-main { order: 1; }
+}
+
+/* Announcements form styling - consistent input sizes */
+.announcements-panel .announcement-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-top: 8px;
+}
+.announcements-panel .announcement-textarea { min-height: 120px; resize: vertical; }
+.announcements-panel h4 { margin-bottom: 8px; }
+.announcements-panel .btn-primary, .announcements-panel .btn-secondary { margin-right: 8px; margin-top: 8px; }
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -3513,4 +3549,156 @@ input:checked + .switch-slider:before {
     margin-top: 0.75rem;
     font-size: 0.9rem;
     color: #555;
+}
+
+/* Admin - User Management styles */
+.admin-dashboard .card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.admin-dashboard .admin-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.admin-dashboard .admin-search-input,
+.admin-dashboard input[type="text"],
+.admin-dashboard input[type="search"] {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e6e6e6;
+    background: #fff;
+    outline: none;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-dashboard .admin-search-input:focus,
+.admin-dashboard input[type="text"]:focus,
+.admin-dashboard input[type="search"]:focus {
+    box-shadow: 0 6px 18px rgba(45,80,22,0.06);
+    border-color: #2d5016;
+}
+
+.admin-dashboard .admin-export-btn,
+.admin-dashboard .btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-dashboard .admin-export-btn {
+    background: #2d5016;
+    color: white;
+    border: 1px solid #2d5016;
+}
+
+.admin-dashboard .list-plain {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-dashboard .list-plain li button {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    background: #fff;
+    text-align: left;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.08s ease;
+}
+
+.admin-dashboard .list-plain li button:hover {
+    background: #f8faf8;
+    transform: translateY(-1px);
+}
+
+.admin-dashboard .list-plain li button.active {
+    background: #2d5016;
+    color: #fff;
+    border-color: #2d5016;
+}
+
+.admin-dashboard .admin-details h3 {
+    margin-top: 0;
+}
+
+.admin-dashboard .admin-details p {
+    color: #444;
+    margin: 6px 0;
+}
+
+.admin-dashboard .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+.admin-dashboard .table th,
+.admin-dashboard .table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+}
+
+.admin-dashboard .table thead th {
+    background: #fafafa;
+    font-weight: 600;
+}
+
+.admin-dashboard .small-note {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.admin-dashboard .no-selection {
+    padding: 24px;
+    color: #666;
+    background: #fafafa;
+    border-radius: 8px;
+}
+
+/* Business-specific button styles */
+.admin-dashboard .admin-list-btn {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    background: #fff;
+    color: #222;
+    text-align: left;
+}
+
+.admin-dashboard .admin-list-btn small { opacity: 0.85; color: #444; }
+
+.admin-dashboard .admin-list-btn.btn-tshwane {
+    background: linear-gradient(90deg, #2d5016, #4a7c24);
+    color: #fff;
+    border-color: rgba(255,255,255,0.12);
+}
+
+.admin-dashboard .admin-list-btn.btn-soshanguve {
+    background: linear-gradient(90deg, #1f6fb3, #3aa0e0);
+    color: #fff;
+    border-color: rgba(255,255,255,0.08);
+}
+
+.admin-dashboard .admin-list-btn.btn-garankuwa {
+    background: linear-gradient(90deg, #8b2d91, #c24fb8);
+    color: #fff;
+    border-color: rgba(255,255,255,0.08);
+}
+
+.admin-dashboard .admin-list-btn.active {
+    box-shadow: 0 8px 20px rgba(45,80,22,0.12);
+    transform: translateY(-2px);
 }

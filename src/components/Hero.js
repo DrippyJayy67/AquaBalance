@@ -1,19 +1,9 @@
 import React, { useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Hero = () => {
-  const navigate = useNavigate();
-
-  const handleSmoothScroll = (e, targetId) => {
-    e.preventDefault();
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  };
+  // removed unused navigate and smooth-scroll helper to satisfy linter
 
   // Enhanced parallax effect
   useEffect(() => {
@@ -35,19 +25,19 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const { t } = useLanguage();
+
   return (
     <section className="hero" id="home">
       <div className="hero-parallax">
         <img src="/assets/tlogo.png" alt="Tshwane Logo" className="parallax-logo" />
       </div>
       <div className="hero-content">
-        <h1>Regulating Water Use, Empowering Enterprise</h1>
-        <p className="hero-subtitle">
-          Balancing Opportunity with Sustainability—Join the movement to protect our water and grow your business.
-        </p>
+        <h1>{t('hero.h1')}</h1>
+        <p className="hero-subtitle">{t('hero.subtitle')}</p>
         <div className="cta-buttons">
           <Link to="/signup" className="btn btn-secondary">
-            <i className="fas fa-edit"></i> Register Your Car Wash
+            <i className="fas fa-edit"></i> {t('hero.registerBtn')}
           </Link>
         </div>
       </div>

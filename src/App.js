@@ -5,10 +5,13 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
-import Footer from './components/Footer';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
 import ChatBot from './components/ChatBot';
+import Footer from './components/Footer';
 import ParallaxBackground from './components/ParallaxBackground';
 import './styles/App.css';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 // Component to handle scroll to section on navigation
 const ScrollToSection = () => {
@@ -31,14 +34,14 @@ const ScrollToSection = () => {
   return null;
 };
 
-// Layout component for pages with header and footer
-const Layout = ({ children, showParallax = true }) => {
+// Layout component for pages with header and optional footer
+const Layout = ({ children, showParallax = true, showFooter = true }) => {
   return (
     <>
       {showParallax && <ParallaxBackground />}
       <Header />
       <main>{children}</main>
-      <Footer />
+      {showFooter && <Footer />}
       <ChatBot />
     </>
   );
@@ -47,6 +50,7 @@ const Layout = ({ children, showParallax = true }) => {
 function App() {
   return (
     <Router>
+      <LanguageProvider>
       <div className="App">
         <ScrollToSection />
         <Routes>
@@ -77,6 +81,24 @@ function App() {
               </Layout>
             } 
           />
+
+          {/* Admin pages (use Layout so header/footer remain visible) */}
+          <Route
+            path="/admin/login"
+            element={
+              <Layout showParallax={false} showFooter={false}>
+                <AdminLogin />
+              </Layout>
+            }
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <Layout showParallax={false} showFooter={false}>
+                <AdminDashboard />
+              </Layout>
+            }
+          />
           
           {/* Dashboard page (minimal layout) */}
           <Route 
@@ -90,8 +112,9 @@ function App() {
             element={<Dashboard />} 
           />
         </Routes>
-      </div>
-    </Router>
+        </div>
+        </LanguageProvider>
+      </Router>
   );
 }
 
