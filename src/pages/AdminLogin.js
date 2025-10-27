@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import ChatBot from '../components/ChatBot';
 
 const AdminLogin = () => {
   const { t } = useLanguage();
@@ -17,8 +18,8 @@ const AdminLogin = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.username) newErrors.username = t('admin.validation.username') || 'Username is required';
-    if (!formData.password) newErrors.password = t('admin.validation.password') || 'Password is required';
+    if (!formData.username) newErrors.username = t('Username is required') || 'Username is required';
+    if (!formData.password) newErrors.password = t('Password is required') || 'Password is required';
     return newErrors;
   };
 
@@ -69,7 +70,7 @@ const AdminLogin = () => {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                placeholder={t('admin.login.usernamePlaceholder') || 'Enter admin username'}
+                placeholder={t('Enter admin username') || 'Enter admin username'}
                 className={errors.username || errors.form ? 'error' : ''}
                 required
               />
@@ -84,7 +85,7 @@ const AdminLogin = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                placeholder={t('admin.login.passwordPlaceholder') || 'Enter your password'}
+                placeholder={t('Enter your password') || 'Enter your password'}
                 className={errors.password || errors.form ? 'error' : ''}
                 required
               />
@@ -104,7 +105,7 @@ const AdminLogin = () => {
 
             <button type="submit" className="btn btn-primary auth-btn" disabled={isLoading}>
               {isLoading ? (
-                <><i className="fas fa-spinner fa-spin"></i> {t('admin.login.signingIn') || 'Signing In...'} </>
+                <><i className="fas fa-spinner fa-spin"></i> {t('Signing In...') || 'Signing In...'} </>
               ) : (
                 <><i className="fas fa-sign-in-alt"></i> {t('Sign In') || 'Sign In'}</>
               )}
@@ -112,19 +113,20 @@ const AdminLogin = () => {
           </form>
 
           <div className="auth-footer">
-            <p>{t('admin.login.noAccount') || `Don't have an admin account?`} <Link to="/">{t('Back to Home') || 'Back to Home'}</Link></p>
+            <p> <Link to="/">{t('← Back to Home') || 'Back to Home'}</Link></p>
           </div>
         </div>
 
         <div className="auth-info">
-          <h3>{t('admin.login.welcome') || 'Welcome, Administrator'}</h3>
+          <h3>{t('Welcome to Aqua Balance Tshwane') || 'Welcome, Administrator'}</h3>
           <ul>
-            <li><i className="fas fa-check"></i> {t('admin.login.info.monitor') || 'Monitor water usage and reports'}</li>
-            <li><i className="fas fa-check"></i> {t('admin.login.info.manage') || 'Manage users and registrations'}</li>
-            <li><i className="fas fa-check"></i> {t('admin.login.info.exports') || 'Export reports (CSV/PDF)'}</li>
+            <li><i className="fas fa-check"></i> {t('Monitor water usage and reports') || 'Monitor water usage and reports'}</li>
+            <li><i className="fas fa-check"></i> {t('Manage users and registrations') || 'Manage users and registrations'}</li>
+            <li><i className="fas fa-check"></i> {t('Export reports (CSV/PDF)') || 'Export reports (CSV/PDF)'}</li>
           </ul>
         </div>
       </div>
+      <ChatBot />
     </div>
   );
 };

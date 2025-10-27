@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import ChatBot from '../components/ChatBot';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -221,7 +222,7 @@ const Signup = () => {
   );
 
   return (
-    <div className="signup-page container">
+    <div className="signup-page container" style={{ paddingTop: 80 }}>
       <h2>{t('signup.title') || 'Register your Car Wash'}</h2>
       <form onSubmit={handleSubmit} className="signup-form">
         <div className="steps-indicator">{t('signup.step')} {currentStep}/4</div>
@@ -241,6 +242,7 @@ const Signup = () => {
           <p>{t('signup.haveAccount') || 'Already have an account?'} <Link to="/login">{t('signup.signIn') || 'Sign in'}</Link></p>
         </div>
       </form>
+      <ChatBot />
     </div>
   );
 };

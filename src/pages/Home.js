@@ -5,6 +5,7 @@ import Dashboard from '../components/Dashboard';
 import Features from '../components/Features';
 import Education from '../components/Education';
 import Community from '../components/Community';
+import ChatBot from '../components/ChatBot';
 
 const Home = () => {
   return (
@@ -15,6 +16,7 @@ const Home = () => {
       <Features />
       <Education />
       <Community />
+      <ChatBot />
     </div>
   );
 };

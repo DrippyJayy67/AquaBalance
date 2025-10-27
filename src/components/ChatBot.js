@@ -154,6 +154,21 @@ const ChatBot = () => {
               <div style={{ fontSize: 12, color: '#666' }}>
                 If your question requires human support, use the contact options in this modal.
               </div>
+
+              {/* For more information - vertical contacts with icons */}
+              <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid #eee' }}>
+                <h4 style={{ margin: '8px 0' }}>For more information</h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <a href="https://wa.me/27123587911" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: '#000' }}>
+                    <i className="fab fa-whatsapp" style={{ color: '#25D366', fontSize: 20 }}></i>
+                    <span>WhatsApp: +27 12 358 7911</span>
+                  </a>
+                  <a href="mailto:aquabalance@tshwane.gov.za" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: '#000' }}>
+                    <i className="fas fa-envelope" style={{ color: '#333', fontSize: 18 }}></i>
+                    <span>Email: aquabalance@tshwane.gov.za</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

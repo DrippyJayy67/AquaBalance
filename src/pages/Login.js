@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import ChatBot from '../components/ChatBot';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -163,6 +164,7 @@ const Login = () => {
           </ul>
         </div>
       </div>
+      <ChatBot />
     </div>
   );
 };

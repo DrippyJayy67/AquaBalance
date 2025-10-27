@@ -20,7 +20,8 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Quick Links</h3>
           <p><Link to="/signup">Register Your Car Wash</Link></p>
-          <p><Link to="/dashboard">Dashboard</Link></p>
+          <p><Link to="/login">Sign In</Link></p>
+          <p><Link to="/admin/login">Admin</Link></p>
           <p><a href="/compliance">Compliance Guidelines</a></p>
           <p><a href="/support">Apply for Incentives</a></p>
           <p><a href="/tips">Water Efficiency Tips</a></p>

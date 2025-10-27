@@ -7,7 +7,6 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
-import ChatBot from './components/ChatBot';
 import Footer from './components/Footer';
 import ParallaxBackground from './components/ParallaxBackground';
 import './styles/App.css';
@@ -42,7 +41,6 @@ const Layout = ({ children, showParallax = true, showFooter = true }) => {
       <Header />
       <main>{children}</main>
       {showFooter && <Footer />}
-      <ChatBot />
     </>
   );
 };

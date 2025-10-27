@@ -233,10 +233,10 @@ const AdminDashboard = () => {
     const formalizedThisYear = businesses.filter(b => b.type === 'informal' && b.registered).length;
 
     return [
-      { icon: 'fas fa-building', number: totalRegistered.toLocaleString(), label: t('admin.stats.totalBusinesses') || 'Total Registered Car Washes' },
-      { icon: 'fas fa-tint', number: `${(totalLitersMonthly/1000).toFixed(1)}k`, label: t('admin.stats.monthlyLiters') || 'Liters Monthly Water Use' },
-      { icon: 'fas fa-check-circle', number: `${compliantCount}%`, label: t('admin.stats.compliant') || 'Compliant with Wastewater Disposal' },
-      { icon: 'fas fa-chart-line', number: formalizedThisYear.toString(), label: t('admin.stats.formalized') || 'Informal Car Washes Formalized This Year' }
+      { icon: 'fas fa-building', number: totalRegistered.toLocaleString(), label: t('Total Registered Car Washes') || 'Total Registered Car Washes' },
+      { icon: 'fas fa-tint', number: `${(totalLitersMonthly/1000).toFixed(1)}k`, label: t('Liters Monthly Water Use') || 'Liters Monthly Water Use' },
+      { icon: 'fas fa-check-circle', number: `${compliantCount}%`, label: t('Compliant with Wastewater Disposal') || 'Compliant with Wastewater Disposal' },
+      { icon: 'fas fa-chart-line', number: formalizedThisYear.toString(), label: t('Informal Car Washes Formalized This Year') || 'Informal Car Washes Formalized This Year' }
     ];
   }, [businesses, monthlyTotals, t]);
 
@@ -393,7 +393,7 @@ const AdminDashboard = () => {
         <div className="sidebar-footer">
           <button onClick={handleLogout} className="sidebar-logout">
             <i className="fas fa-sign-out-alt"></i>
-            <span>{t('admin.logout') || 'Logout'}</span>
+            <span>{t('Logout') || 'Logout'}</span>
           </button>
         </div>
       </nav>
