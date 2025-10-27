@@ -406,7 +406,7 @@ const AdminDashboard = () => {
               <div className="logo-section">
                 <img src="/assets/A.png" alt="Aqua Balance" className="dashboard-logo" />
                 <div>
-                  <h1>{t('Admin Dashboard Overview') || 'Admin Dashboard'}</h1>
+                  <h1>{t('Admin Dashboard') || 'Admin Dashboard'}</h1>
                   <p style={{ margin: 0 }}>{t('Admin Dashboard Overview') || "Administrative control panel and reports"}</p>
                 </div>
               </div>
@@ -709,23 +709,51 @@ const AdminDashboard = () => {
               <div className="announcements-panel" style={{ paddingTop: 80 }}>
                 <h2>Announcements & Notifications</h2>
 
-                <div style={{ display: 'flex', gap: 12 }}>
-                  <div style={{ flex: 1 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                  <div>
                     <h4>Create / Edit Announcement</h4>
-                    <input className="announcement-input" placeholder="Title" value={newAnnouncement.title} onChange={e => setNewAnnouncement(prev => ({ ...prev, title: e.target.value }))} />
-                    <textarea className="announcement-input announcement-textarea" placeholder="Description" value={newAnnouncement.desc} onChange={e => setNewAnnouncement(prev => ({ ...prev, desc: e.target.value }))} />
-                    <select className="announcement-input" value={newAnnouncement.priority} onChange={e => setNewAnnouncement(prev => ({ ...prev, priority: e.target.value }))}>
-                      <option value="info">Info</option>
-                      <option value="warning">Warning</option>
-                      <option value="critical">Critical</option>
-                    </select>
-                    <div style={{ marginTop: 8 }}>
-                      <button onClick={handleCreateAnnouncement} className="btn-primary">{editingId ? 'Save' : 'Create'}</button>
-                      {editingId && <button onClick={() => { setEditingId(null); setNewAnnouncement({ title: '', desc: '', priority: 'info' }); }} className="btn-secondary">Cancel</button>}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                      <div>
+                        <label style={{ display: 'block', marginBottom: 4, fontSize: '0.9em', color: '#666' }}>Title</label>
+                        <input 
+                          className="announcement-input" 
+                          placeholder="Enter announcement title" 
+                          value={newAnnouncement.title} 
+                          onChange={e => setNewAnnouncement(prev => ({ ...prev, title: e.target.value }))} 
+                          style={{ width: '100%' }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', marginBottom: 4, fontSize: '0.9em', color: '#666' }}>Description</label>
+                        <textarea 
+                          className="announcement-input announcement-textarea" 
+                          placeholder="Enter announcement description" 
+                          value={newAnnouncement.desc} 
+                          onChange={e => setNewAnnouncement(prev => ({ ...prev, desc: e.target.value }))}
+                          style={{ width: '100%', minHeight: '100px' }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{ display: 'block', marginBottom: 4, fontSize: '0.9em', color: '#666' }}>Priority</label>
+                        <select 
+                          className="announcement-input" 
+                          value={newAnnouncement.priority} 
+                          onChange={e => setNewAnnouncement(prev => ({ ...prev, priority: e.target.value }))}
+                          style={{ width: '100%' }}
+                        >
+                          <option value="info">Info</option>
+                          <option value="warning">Warning</option>
+                          <option value="critical">Critical</option>
+                        </select>
+                      </div>
+                      <div style={{ marginTop: 8 }}>
+                        <button onClick={handleCreateAnnouncement} className="btn-primary">{editingId ? 'Save' : 'Create'}</button>
+                        {editingId && <button onClick={() => { setEditingId(null); setNewAnnouncement({ title: '', desc: '', priority: 'info' }); }} className="btn-secondary" style={{ marginLeft: 8 }}>Cancel</button>}
+                      </div>
                     </div>
                   </div>
 
-                  <div style={{ flex: 1 }}>
+                  <div>
                     <h4>Existing Announcements</h4>
                     <ul className="list-plain">
                       {announcements.map(a => (
