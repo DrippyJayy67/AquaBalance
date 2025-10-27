@@ -40,7 +40,7 @@ const AdminLogin = () => {
         localStorage.setItem('adminLoggedIn', 'true');
         navigate('/admin/dashboard');
       } else {
-        setErrors({ form: t('admin.login.invalid') || 'Invalid credentials' });
+        setErrors({ form: t('Invalid credentials') || 'Invalid credentials' });
       }
       setIsLoading(false);
     }, 700);
@@ -95,7 +95,6 @@ const AdminLogin = () => {
             <div className="form-options">
               <label className="checkbox-container">
                 <input type="checkbox" name="remember" checked={formData.remember} onChange={handleInputChange} />
-                <span className="checkmark"></span>
                 {t('Remember me') || 'Remember me'}
               </label>
               <a href="#forgot" className="forgot-link">{t('Forgot password?') || 'Forgot password?'}</a>

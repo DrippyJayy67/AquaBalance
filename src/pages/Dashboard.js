@@ -1,10 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import adminApi from '../api/adminApi';
+import { getCurrentUser, logoutUser, isAuthenticated } from '../api/authApi';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState('overview');
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    console.log('Dashboard useEffect - Checking authentication...');
+    
+    // Check if user is authenticated
+    const authenticated = isAuthenticated();
+    const currentUser = getCurrentUser();
+    
+    console.log('Is authenticated:', authenticated);
+    console.log('Current user:', currentUser);
+    console.log('Auth token:', localStorage.getItem('authToken'));
+    
+    if (!authenticated) {
+      console.log('User not authenticated, redirecting to login...');
+      navigate('/login');
+      return;
+    }
+
+    // Get current user data
+    if (currentUser) {
+      console.log('Setting user data:', currentUser);
+      setUserData(currentUser);
+    }
+  }, [navigate]);
+
+  // Helper function to calculate operating duration
+  const getOperatingDuration = () => {
+    if (!userData?.client) return '0 months';
+    
+    // For now, we'll calculate from January 2025 as shown in the mock data
+    // In a real app, you'd have a registrationDate field
+    const startDate = new Date('2025-01-01');
+    const now = new Date();
+    
+    const months = Math.floor((now - startDate) / (1000 * 60 * 60 * 24 * 30));
+    return `${months} months`;
+  };
+
+  const getOperatingStartDate = () => {
+    // This would come from the API in a real application
+    return 'January 2025';
+  };
 
   const handleSectionChange = (section) => {
     setActiveSection(section);
@@ -13,7 +57,7 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    // TODO: Implement actual logout logic
+    logoutUser();
     navigate('/');
   };
 
@@ -252,7 +296,7 @@ const Dashboard = () => {
     <div className="dashboard-section">
       <div className="section-header">
         <h2><i className="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
-        <p>Welcome back! Here's your car wash performance summary.</p>
+        <p>Welcome! Here's your car wash performance summary.</p>
       </div>
 
       <div className="stats-row">
@@ -1238,7 +1282,23 @@ const Dashboard = () => {
     </div>
   );
 
-  const renderProfile = () => (
+  const renderProfile = () => {
+    if (!userData) {
+      return (
+        <div className="dashboard-section">
+          <div className="section-header">
+            <h2><i className="fas fa-user"></i> Business Profile</h2>
+            <p>Loading your business information...</p>
+          </div>
+          <div className="loading-spinner">
+            <i className="fas fa-spinner fa-spin"></i>
+            <p>Loading profile data...</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
     <div className="dashboard-section">
       <div className="section-header">
         <h2><i className="fas fa-user"></i> Business Profile</h2>
@@ -1252,9 +1312,9 @@ const Dashboard = () => {
             <i className="fas fa-business-time"></i>
           </div>
           <div className="stat-content">
-            <h3>8 months</h3>
+            <h3>{getOperatingDuration()}</h3>
             <p>Operating Duration</p>
-            <span className="stat-change positive">Since January 2025</span>
+            <span className="stat-change positive">Since {getOperatingStartDate()}</span>
           </div>
         </div>
 
@@ -1308,7 +1368,7 @@ const Dashboard = () => {
               </div>
               <div className="detail-content">
                 <label>Business Name</label>
-                <span>Sipho's Quality Car Wash</span>
+                <span>{userData?.client?.businessName || 'Loading...'}</span>
               </div>
               <button className="edit-btn primary">
                 <i className="fas fa-edit"></i>
@@ -1321,7 +1381,7 @@ const Dashboard = () => {
               </div>
               <div className="detail-content">
                 <label>Registration Number</label>
-                <span>CW2025-MAM-001</span>
+                <span>{userData?.client?.registrationNumber || 'Not provided'}</span>
               </div>
               <button className="edit-btn success">
                 <i className="fas fa-edit"></i>
@@ -1334,7 +1394,7 @@ const Dashboard = () => {
               </div>
               <div className="detail-content">
                 <label>Location</label>
-                <span>Mamelodi, Tshwane</span>
+                <span>{userData?.client?.townShip || 'Not specified'}</span>
               </div>
               <button className="edit-btn warning">
                 <i className="fas fa-edit"></i>
@@ -1347,7 +1407,7 @@ const Dashboard = () => {
               </div>
               <div className="detail-content">
                 <label>Operating Since</label>
-                <span>January 2025</span>
+                <span>{getOperatingStartDate()}</span>
               </div>
               <button className="edit-btn info">
                 <i className="fas fa-edit"></i>
@@ -1375,7 +1435,7 @@ const Dashboard = () => {
                 </div>
                 <div className="contact-content">
                   <label>Email Address</label>
-                  <span>sipho@example.com</span>
+                  <span>{userData?.client?.email || userData?.accountEmail || 'Not provided'}</span>
                 </div>
                 <button className="contact-edit primary">
                   <i className="fas fa-edit"></i>
@@ -1388,7 +1448,7 @@ const Dashboard = () => {
                 </div>
                 <div className="contact-content">
                   <label>Phone Number</label>
-                  <span>+27 12 345 6789</span>
+                  <span>{userData?.client?.phoneNumber || 'Not provided'}</span>
                 </div>
                 <button className="contact-edit success">
                   <i className="fas fa-edit"></i>
@@ -1401,7 +1461,7 @@ const Dashboard = () => {
                 </div>
                 <div className="contact-content">
                   <label>WhatsApp</label>
-                  <span>+27 12 345 6789</span>
+                  <span>{userData?.client?.whatappNumber || userData?.client?.phoneNumber || 'Not provided'}</span>
                 </div>
                 <button className="contact-edit warning">
                   <i className="fas fa-edit"></i>
@@ -1581,7 +1641,8 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
   const renderSection = () => {
     switch (activeSection) {
@@ -1651,7 +1712,7 @@ const Dashboard = () => {
             <img src="/assets/A.png" alt="Aqua Balance" className="dashboard-logo" />
             <div>
               <h1>Aqua Balance Dashboard</h1>
-              <p>Sipho's Quality Car Wash</p>
+              <p>{userData?.client?.businessName || 'Loading...'}</p>
             </div>
           </div>
           <div className="header-actions">
@@ -1665,8 +1726,8 @@ const Dashboard = () => {
               <div className="profile-trigger">
                 <img src="/assets/A.png" alt="User Avatar" className="profile-avatar-small" />
                 <div className="profile-details">
-                  <span className="profile-name">Sipho Mthembu</span>
-                  <span className="profile-business">Quality Car Wash</span>
+                  <span className="profile-name">{userData?.client?.primaryContactPerson || 'User'}</span>
+                  <span className="profile-business">{userData?.client?.businessName || 'Business'}</span>
                 </div>
                 <i className="fas fa-chevron-down profile-arrow"></i>
               </div>

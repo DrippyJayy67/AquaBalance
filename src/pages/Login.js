@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import ChatBot from '../components/ChatBot';
+import Toast from '../components/Toast';
+import { loginUser } from '../api/authApi';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +12,7 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,6 +30,21 @@ const Login = () => {
     }
   };
 
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToast({ show: false, message: '', type: 'success' });
+    
+    // If it was a success toast, navigate to dashboard after closing
+    if (toast.type === 'success' && toast.show) {
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 300); // Small delay for smooth transition
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -40,14 +58,12 @@ const Login = () => {
     // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password !== 'demo1234') {
-      newErrors.password = 'Incorrect password. Please enter the correct password.';
     }
 
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     
@@ -63,12 +79,44 @@ const Login = () => {
       return;
     }
 
-    // Simulate login process
-    setTimeout(() => {
-      console.log('Login successful:', formData);
-      navigate('/dashboard');
+    try {
+      const result = await loginUser(formData.email, formData.password);
+      
+      if (result.success) {
+        console.log('Login successful:', result.data);
+        console.log('Auth token after login:', localStorage.getItem('authToken'));
+        console.log('User data after login:', localStorage.getItem('user'));
+        
+        // Show success toast
+        showToast('Login successful!', 'success');
+      } else {
+        // Handle API errors
+        if (result.status === 400 || result.status === 401) {
+          // Handle authentication errors
+          const errorMessage = result.error || 'Invalid email or password. Please try again.';
+          setErrors({
+            general: errorMessage
+          });
+          showToast(errorMessage, 'error');
+        } else {
+          // Handle other types of errors
+          const errorMessage = result.error || 'Login failed. Please check your connection and try again.';
+          setErrors({
+            general: errorMessage
+          });
+          showToast(errorMessage, 'error');
+        }
+      }
+    } catch (error) {
+      console.error('Unexpected error during login:', error);
+      const errorMessage = 'An unexpected error occurred. Please try again.';
+      setErrors({
+        general: errorMessage
+      });
+      showToast(errorMessage, 'error');
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -88,6 +136,13 @@ const Login = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="auth-form">
+            {errors.general && (
+              <div className="error-message general-error">
+                <i className="fas fa-exclamation-triangle"></i>
+                {errors.general}
+              </div>
+            )}
+            
             <div className="form-group">
               <label htmlFor="email">
                 <i className="fas fa-envelope"></i>
@@ -127,7 +182,6 @@ const Login = () => {
             <div className="form-options">
               <label className="checkbox-container">
                 <input type="checkbox" />
-                <span className="checkmark"></span>
                 Remember me
               </label>
               <a href="#forgot" className="forgot-link">Forgot password?</a>
@@ -165,6 +219,14 @@ const Login = () => {
         </div>
       </div>
       <ChatBot />
+      <Toast 
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.show}
+        onClose={hideToast}
+        duration={0}
+        showConfirmButton={true}
+      />
     </div>
   );
 };
