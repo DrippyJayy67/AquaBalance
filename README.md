@@ -48,7 +48,57 @@ A comprehensive React application for the Aqua Balance Tshwane Car Wash Regulati
    npm start
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+4. Open your browser and navigate to `http://localhost:3000`
+
+## API Configuration
+
+This application connects to a backend API for user authentication and data management.
+
+### Development Setup
+
+For local development, the application automatically uses the proxy configuration in `package.json` to connect to the backend API running on `https://localhost:7180`.
+
+### Production Deployment
+
+#### Environment Variables
+
+Set the following environment variable for production deployment:
+
+```bash
+REACT_APP_API_URL=https://your-backend-api-url.com/api
+```
+
+#### AWS Amplify Deployment
+
+1. **Set Environment Variables**:
+   - Go to your Amplify app console
+   - Navigate to "App settings" > "Environment variables"
+   - Add: `REACT_APP_API_URL` with your backend API URL
+
+2. **CORS Configuration**:
+   - Ensure your backend API has CORS configured to allow requests from your Amplify domain
+   - Example CORS origins: `https://your-app.amplifyapp.com`
+
+#### Presentation Mode (Localhost Backend)
+
+For presentations where you want to use a hosted frontend with a local backend:
+
+1. **Backend CORS Setup**:
+   - Configure your backend API to allow CORS from your hosted domain
+   - Add your Amplify URL to the allowed origins
+
+2. **Alternative Options**:
+   - Use a CORS proxy service (requires activation)
+   - Copy `.env.example` to `.env.production` and configure as needed
+
+#### Troubleshooting CORS Issues
+
+If you encounter CORS errors when using a hosted frontend with localhost backend:
+
+1. Check that your backend API is running on `https://localhost:7180`
+2. Ensure SSL certificates are trusted in your browser
+3. Configure backend CORS to allow your hosted domain
+4. Consider using environment variables for different API endpoints
 
 ### Building for Production
 

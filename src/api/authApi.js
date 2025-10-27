@@ -1,12 +1,48 @@
 // Authentication API service
-// Try proxy first (for development with React proxy), fallback to direct HTTPS
-const API_ENDPOINTS = {
-  development: ['/api', 'https://localhost:7180/api'],
-  production: ['https://localhost:7180/api']
+// 
+// CORS Configuration for Hosted Environments:
+// This API service tries multiple endpoints to handle CORS issues when hosted:
+// 1. Environment variable REACT_APP_API_URL (recommended for production)
+// 2. Direct localhost access (requires backend CORS configuration)
+// 3. CORS proxy service (requires activation)
+// 
+// For presentations from hosted environments (like AWS Amplify):
+// - Set REACT_APP_API_URL environment variable to your backend URL, OR
+// - Configure your backend API to allow CORS from your hosted domain, OR
+// - Use the CORS proxy (visit cors-anywhere.herokuapp.com to activate)
+//
+// API endpoint configuration based on environment
+const getApiBaseUrl = () => {
+  // Check if we're in a hosted environment (Amplify, Netlify, etc.)
+  const hostname = window.location.hostname;
+  
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    // Local development - use localhost with proxy fallback
+    return process.env.NODE_ENV === 'development' ? ['/api', 'https://localhost:7180/api'] : ['https://localhost:7180/api'];
+  } else {
+    // Hosted environment - try multiple approaches for CORS
+    const envApiUrl = process.env.REACT_APP_API_URL;
+    
+    const urls = [];
+    
+    // First try environment variable if set
+    if (envApiUrl) {
+      urls.push(envApiUrl);
+    }
+    
+    // For presentation purposes, try localhost with CORS proxy
+    // Note: This requires running the backend with CORS enabled for the hosted domain
+    urls.push('https://localhost:7180/api');
+    
+    // Add CORS proxy as last resort (requires activation at cors-anywhere.herokuapp.com)
+    urls.push('https://cors-anywhere.herokuapp.com/https://localhost:7180/api');
+    
+    return urls;
+  }
 };
 
 const getCurrentApiUrls = () => {
-  return API_ENDPOINTS[process.env.NODE_ENV] || API_ENDPOINTS.development;
+  return getApiBaseUrl();
 };
 
 // Get auth token
@@ -100,11 +136,22 @@ async function makeApiRequest(endpoint, options = {}) {
     
     // Handle specific error types
     if (lastError.name === 'TypeError' && lastError.message.includes('Failed to fetch')) {
-      throw new AuthApiError(
-        'Unable to connect to server. Please ensure the API server is running at https://localhost:7180 and that SSL certificates are trusted.',
-        0,
-        { originalError: lastError.message }
-      );
+      // Check if this might be a CORS issue
+      const isHosted = !window.location.hostname.includes('localhost');
+      
+      if (isHosted) {
+        throw new AuthApiError(
+          'CORS Error: Unable to connect from hosted environment to localhost backend. For presentation purposes, please either:\n1. Set REACT_APP_API_URL to your deployed backend URL, or\n2. Run the backend with CORS enabled for your domain, or\n3. Use a local development server.',
+          0,
+          { originalError: lastError.message, corsIssue: true }
+        );
+      } else {
+        throw new AuthApiError(
+          'Unable to connect to server. Please ensure the API server is running at https://localhost:7180 and that SSL certificates are trusted.',
+          0,
+          { originalError: lastError.message }
+        );
+      }
     }
     
     throw new AuthApiError(
