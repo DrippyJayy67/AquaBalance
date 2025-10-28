@@ -60,7 +60,7 @@ const Header = () => {
             <div style={{ fontSize: '0.9rem', opacity: 0.9 }}>
               {t('portalSubtitle')}
             </div>
-            <div style={{ fontSize: '0.8rem', fontStyle: 'italic', opacity: 0.8, color: '#4CAF50', marginTop: '2px' }}>
+            <div style={{ fontSize: '0.8rem', fontStyle: 'italic', opacity: 0.8, color: '#FFFFFF', marginTop: '2px' }}>
               "Conserving Water, Preserving Our Future"
             </div>
           </div>

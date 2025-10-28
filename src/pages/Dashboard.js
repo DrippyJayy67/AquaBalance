@@ -1712,8 +1712,8 @@ const Dashboard = () => {
             <img src="/assets/A.png" alt="Aqua Balance" className="dashboard-logo" />
             <div>
               <h1>Aqua Balance Dashboard</h1>
-              <p style={{ fontSize: '0.9rem', fontStyle: 'italic', opacity: 0.8, color: '#4CAF50', margin: '4px 0' }}>
-                "Kea Car Wash"
+              <p style={{ fontSize: '0.9rem', fontStyle: 'italic', opacity: 0.8, color: '#FFFFFF', margin: '4px 0' }}>
+                Kea Car Wash
               </p>
             </div>
           </div>
