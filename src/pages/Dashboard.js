@@ -1368,7 +1368,7 @@ const Dashboard = () => {
               </div>
               <div className="detail-content">
                 <label>Business Name</label>
-                <span>{userData?.client?.businessName || 'Loading...'}</span>
+                <span>{userData?.client?.businessName || 'Kea Car Wash'}</span>
               </div>
               <button className="edit-btn primary">
                 <i className="fas fa-edit"></i>
@@ -1713,7 +1713,7 @@ const Dashboard = () => {
             <div>
               <h1>Aqua Balance Dashboard</h1>
               <p style={{ fontSize: '0.9rem', fontStyle: 'italic', opacity: 0.8, color: '#4CAF50', margin: '4px 0' }}>
-                "Conserving Water, Preserving Our Future"
+                "Kea Car Wash"
               </p>
             </div>
           </div>
@@ -1728,8 +1728,8 @@ const Dashboard = () => {
               <div className="profile-trigger">
                 <img src="/assets/A.png" alt="User Avatar" className="profile-avatar-small" />
                 <div className="profile-details">
-                  <span className="profile-name">{userData?.username || 'Kea'}</span>
-                  <span className="profile-business">{userData?.client?.clientName || 'AquaBalance Demo Business'}</span>
+                  <span className="profile-name" style={{ color: 'white' }}>{userData?.username || 'Kea'}</span>
+                  <span className="profile-business" style={{ color: 'white' }}>{userData?.client?.clientName || 'AquaBalance Demo Business'}</span>
                 </div>
                 <i className="fas fa-chevron-down profile-arrow"></i>
               </div>
