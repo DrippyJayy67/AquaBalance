@@ -1712,7 +1712,9 @@ const Dashboard = () => {
             <img src="/assets/A.png" alt="Aqua Balance" className="dashboard-logo" />
             <div>
               <h1>Aqua Balance Dashboard</h1>
-              <p>{userData?.client?.businessName || 'Loading...'}</p>
+              <p style={{ fontSize: '0.9rem', fontStyle: 'italic', opacity: 0.8, color: '#4CAF50', margin: '4px 0' }}>
+                "Conserving Water, Preserving Our Future"
+              </p>
             </div>
           </div>
           <div className="header-actions">
@@ -1726,8 +1728,8 @@ const Dashboard = () => {
               <div className="profile-trigger">
                 <img src="/assets/A.png" alt="User Avatar" className="profile-avatar-small" />
                 <div className="profile-details">
-                  <span className="profile-name">{userData?.client?.primaryContactPerson || 'User'}</span>
-                  <span className="profile-business">{userData?.client?.businessName || 'Business'}</span>
+                  <span className="profile-name">{userData?.username || 'Kea'}</span>
+                  <span className="profile-business">{userData?.client?.clientName || 'AquaBalance Demo Business'}</span>
                 </div>
                 <i className="fas fa-chevron-down profile-arrow"></i>
               </div>

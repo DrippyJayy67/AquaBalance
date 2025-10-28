@@ -1,15 +1,8 @@
-// Authentication API service
+// Authentication API service - DEMO MODE
 // 
-// CORS Configuration for Hosted Environments:
-// This API service tries multiple endpoints to handle CORS issues when hosted:
-// 1. Environment variable REACT_APP_API_URL (recommended for production)
-// 2. Direct localhost access (requires backend CORS configuration)
-// 3. CORS proxy service (requires activation)
-// 
-// For presentations from hosted environments (like AWS Amplify):
-// - Set REACT_APP_API_URL environment variable to your backend URL, OR
-// - Configure your backend API to allow CORS from your hosted domain, OR
-// - Use the CORS proxy (visit cors-anywhere.herokuapp.com to activate)
+// This service uses hardcoded credentials for demonstration purposes
+// Registration creates demo accounts with sample data
+// All authentication is handled locally without backend API calls
 //
 // API endpoint configuration based on environment
 const getApiBaseUrl = () => {
@@ -201,72 +194,105 @@ function mapFormDataToApiRequest(formData) {
 }
 
 export async function registerUser(formData) {
-  const apiData = mapFormDataToApiRequest(formData);
-  
+  // Hardcoded registration - simulate successful registration
   try {
-    const result = await makeApiRequest('/Account/Register', {
-      method: 'POST',
-      body: JSON.stringify(apiData),
-    });
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Store user data locally
+    const userData = {
+      accountId: Date.now(), // Use timestamp as unique ID
+      username: formData.businessName || 'Demo Business',
+      accountEmail: formData.email,
+      client: {
+        clientName: formData.businessName || 'Demo Business',
+        contactPerson: formData.contactPerson || 'Demo Contact',
+        email: formData.email,
+        phone: formData.phone || '123-456-7890',
+        address: formData.address || 'Demo Address',
+        city: formData.city || 'Demo City',
+        estimatedDailyUsage: parseFloat(formData.estimatedUsage) || 0.5
+      },
+      message: 'Registration successful (Demo Mode)'
+    };
+    
+    localStorage.setItem('authToken', `demo_${userData.accountId}`);
+    localStorage.setItem('user', JSON.stringify(userData));
     
     return {
       success: true,
-      data: result,
-      message: 'Registration successful'
+      data: userData,
+      message: 'Registration successful (Demo Mode)'
     };
   } catch (error) {
     console.error('Registration error:', error);
     
     return {
       success: false,
-      error: error.message,
-      status: error.status,
-      data: error.data
+      error: 'Registration failed in demo mode',
+      status: 500
     };
   }
 }
 
 export async function loginUser(email, password) {
+  // Hardcoded credentials for demo (credentials not logged for security)
+  const validCredentials = [
+    { email: 'kea@gmail.com', password: 'demo1234', role: 'admin' },
+    { email: 'admin@aquabalance.com', password: 'admin123', role: 'admin' },
+    { email: 'demo@carwash.com', password: 'demo123', role: 'user' }
+  ];
+  
   try {
-    const result = await makeApiRequest('/Account/Login', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: email,
-        password: password
-      }),
-    });
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 800));
     
-    // Store authentication token if provided, otherwise use accountId as token
-    if (result.token) {
-      localStorage.setItem('authToken', result.token);
-    } else if (result.accountId) {
-      // If no token provided, use accountId as authentication indicator
-      localStorage.setItem('authToken', `account_${result.accountId}`);
+    // Check if credentials match
+    const user = validCredentials.find(cred => 
+      cred.email.toLowerCase() === email.toLowerCase() && 
+      cred.password === password
+    );
+    
+    if (!user) {
+      throw new Error('Invalid email or password');
     }
     
-    // Store complete user data including client information
+    // Create demo user data
     const userData = {
-      accountId: result.accountId,
-      username: result.username,
-      accountEmail: result.accountEmail,
-      client: result.client,
-      message: result.message
+      accountId: Date.now(),
+      username: 'Kea',
+      accountEmail: user.email,
+      role: user.role,
+      client: {
+        clientName: 'AquaBalance Demo Business',
+        contactPerson: 'Kea',
+        email: user.email,
+        phone: '+27 11 123 4567',
+        address: '123 Demo Street',
+        city: 'Tshwane',
+        estimatedDailyUsage: 2.5
+      },
+      message: 'Login successful (Demo Mode)'
     };
+    
+    // Store authentication data
+    localStorage.setItem('authToken', `demo_${userData.accountId}`);
     localStorage.setItem('user', JSON.stringify(userData));
+    
+    console.log('Authentication successful for user:', user.email);
     
     return {
       success: true,
-      data: result,
-      message: 'Login successful'
+      data: userData,
+      message: 'Login successful (Demo Mode)'
     };
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Login error occurred');
     
     return {
       success: false,
-      error: error.message,
-      status: error.status,
-      data: error.data
+      error: error.message || 'Login failed',
+      status: 401
     };
   }
 }
